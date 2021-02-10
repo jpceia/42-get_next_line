@@ -6,7 +6,7 @@
 /*   By: jpceia <jpceia@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/09 23:49:24 by jpceia            #+#    #+#             */
-/*   Updated: 2021/02/10 02:56:40 by jpceia           ###   ########.fr       */
+/*   Updated: 2021/02/10 02:59:54 by jpceia           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 int	get_next_line(int fd, char **line)
 {
 	static char	*buf = NULL;
-	static int	buf_idx = BUFFER_SIZE;;
+	static int	buf_idx = 0;
 	int			line_idx;
 	int			breakline;
 	int			b;
@@ -34,7 +34,7 @@ int	get_next_line(int fd, char **line)
 	{
 		while (buf[buf_idx] && buf[buf_idx] != '\n')
 			(*line)[line_idx++] = buf[buf_idx++];
-		breakline = buf[buf_idx++] == '\n';
+		breakline = buf[buf_idx++] > 0;
 	}
 	while (!breakline)
 	{
@@ -45,7 +45,7 @@ int	get_next_line(int fd, char **line)
 		buf_idx = 0;
 		while (buf[buf_idx] && buf[buf_idx] != '\n')
 			(*line)[line_idx++] = buf[buf_idx++];
-		breakline = buf[buf_idx++] == '\n';
+		breakline = buf[buf_idx++] > 0;
 	}
 	(*line)[line_idx] = '\0';
 	if (breakline)
