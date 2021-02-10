@@ -6,7 +6,7 @@
 /*   By: jpceia <jpceia@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/09 23:49:24 by jpceia            #+#    #+#             */
-/*   Updated: 2021/02/10 02:16:06 by jpceia           ###   ########.fr       */
+/*   Updated: 2021/02/10 02:18:21 by jpceia           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,27 +33,24 @@ int	get_next_line(int fd, char **line)
 	}
 	else
 	{
-		while (buf_idx < BUFFER_SIZE && buf[buf_idx] && buf[buf_idx] != '\n')
+		while (buf[buf_idx] && buf[buf_idx] != '\n')
 			(*line)[line_idx++] = buf[buf_idx++];
 		breakline = buf[buf_idx++] == '\n';
 	}
 	while (!breakline)
 	{
 		b = read(fd, buf, BUFFER_SIZE - 1);
-		buf[b] = 0;
 		if (b <= 0)
 			break ;
+		buf[b] = 0;
 		buf_idx = 0;
-		while (buf_idx < BUFFER_SIZE && buf[buf_idx] && buf[buf_idx] != '\n')
+		while (buf[buf_idx] && buf[buf_idx] != '\n')
 			(*line)[line_idx++] = buf[buf_idx++];
 		breakline = buf[buf_idx++] == '\n';
 	}
+	(*line)[line_idx] = '\0';
 	if (breakline)
-	{
-		(*line)[line_idx] = 0;
 		return (1);
-	}
-	(*line)[line_idx] = 0;
 	free(buf);
 	return (b);
 }
