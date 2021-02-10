@@ -6,7 +6,7 @@
 /*   By: jpceia <jpceia@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/09 23:49:24 by jpceia            #+#    #+#             */
-/*   Updated: 2021/02/10 02:59:54 by jpceia           ###   ########.fr       */
+/*   Updated: 2021/02/10 03:09:07 by jpceia           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,29 +14,32 @@
 #include <unistd.h>
 #include <stdlib.h>
 
-int	get_next_line(int fd, char **line)
+int	init_buf(char **buf)
+{
+	if (*buf == NULL)
+	{
+		*buf = malloc(BUFFER_SIZE);
+		if (!*buf)
+			return (-1);
+		*buf[0] = 0;
+		return (0);
+	}
+	return (1);
+}
+
+int	get_next_line_core(int fd, char **line, int line_idx, int breakline)
 {
 	static char	*buf = NULL;
 	static int	buf_idx = 0;
-	int			line_idx;
-	int			breakline;
 	int			b;
 
-	line_idx = 0;
-	breakline = 0;
-	if (buf == NULL)
-	{
-		buf = malloc(BUFFER_SIZE);
-		if (!buf)
-			return (-1);
-	}
-	else
-	{
+	b = init_buf(&buf);
+	if (b < 0)
+		return (-1);
+	else if (b > 0)
 		while (buf[buf_idx] && buf[buf_idx] != '\n')
 			(*line)[line_idx++] = buf[buf_idx++];
-		breakline = buf[buf_idx++] > 0;
-	}
-	while (!breakline)
+	while (buf[buf_idx++] == 0)
 	{
 		b = read(fd, buf, BUFFER_SIZE - 1);
 		if (b <= 0)
@@ -45,11 +48,15 @@ int	get_next_line(int fd, char **line)
 		buf_idx = 0;
 		while (buf[buf_idx] && buf[buf_idx] != '\n')
 			(*line)[line_idx++] = buf[buf_idx++];
-		breakline = buf[buf_idx++] > 0;
 	}
 	(*line)[line_idx] = '\0';
-	if (breakline)
+	if (buf[buf_idx - 1] != 0)
 		return (1);
 	free(buf);
 	return (b);
+}
+
+int	get_next_line(int fd, char **line)
+{
+	return (get_next_line_core(fd, line, 0, 0));
 }
