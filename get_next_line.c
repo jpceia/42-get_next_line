@@ -6,7 +6,7 @@
 /*   By: jpceia <jpceia@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/09 23:49:24 by jpceia            #+#    #+#             */
-/*   Updated: 2021/02/10 02:18:21 by jpceia           ###   ########.fr       */
+/*   Updated: 2021/02/10 02:56:40 by jpceia           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 int	get_next_line(int fd, char **line)
 {
 	static char	*buf = NULL;
-	static int	first_call = 1;
 	static int	buf_idx = BUFFER_SIZE;;
 	int			line_idx;
 	int			breakline;
