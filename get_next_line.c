@@ -6,11 +6,12 @@
 /*   By: jpceia <jpceia@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/09 23:49:24 by jpceia            #+#    #+#             */
-/*   Updated: 2021/03/24 04:05:16 by jpceia           ###   ########.fr       */
+/*   Updated: 2021/03/24 04:26:16 by jpceia           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+#include <sys/resource.h>
 
 t_tape *tape_init(t_tape *p_tape)
 {
@@ -41,17 +42,19 @@ char *str_concat_tape(char **line, t_tape *tape, size_t end)
 
 int get_next_line(int fd, char **line)
 {
-	static t_tape tapes[1024];
+	static t_tape tapes[RLIMIT_NOFILE];
 	t_tape *tape;
 	size_t index;
 	int nb;
 
+	if (fd < 0 || fd >= RLIMIT_NOFILE)
+		return (-1);
 	tape = &tapes[fd];
 	if (!tape_init(tape) || !(*line = freeable_empty_string()))
 		return (-1);
 	while (1)
 	{
-		index = tape->start + 1;
+		index = tape->start;
 		while (tape->buf[index] != '\n' && tape->buf[index] != '\0' && index <= BUFFER_SIZE)
 			index++;
 		*line = str_concat_tape(line, tape, index);
