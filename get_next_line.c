@@ -6,7 +6,7 @@
 /*   By: jpceia <jpceia@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/09 23:49:24 by jpceia            #+#    #+#             */
-/*   Updated: 2021/03/25 12:14:59 by jceia            ###   ########.fr       */
+/*   Updated: 2021/03/25 13:58:00 by jceia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,8 @@ int		get_next_line(int fd, char **line)
 	size_t			index;
 	int				nb;
 
-	if (fd < 0 || fd >= RLIMIT_NOFILE ||
-		!tape_init(&tapes[fd]) || !(*line = freeable_empty_string()))
+	if (fd < 0 || fd >= RLIMIT_NOFILE || BUFFER_SIZE <= 0 ||
+		!line || !tape_init(&tapes[fd]) || !(*line = freeable_empty_string()))
 		return (-1);
 	tape = &tapes[fd];
 	while (1)
