@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jceia <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/03/25 12:10:55 by jceia             #+#    #+#             */
+/*   Updated: 2021/03/25 12:14:23 by jceia            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "get_next_line.h"
 
-size_t ft_strlen(const char *str)
+size_t	ft_strlen(const char *str)
 {
-	size_t index;
+	size_t	index;
 
 	index = 0;
 	while (str[index])
@@ -10,10 +22,10 @@ size_t ft_strlen(const char *str)
 	return (index);
 }
 
-char *ft_strcat(char *dest, const char *src)
+char	*ft_strcat(char *dest, const char *src)
 {
-	int n;
-	int index;
+	int		n;
+	int		index;
 
 	n = ft_strlen(dest);
 	index = 0;
@@ -26,10 +38,10 @@ char *ft_strcat(char *dest, const char *src)
 	return (dest);
 }
 
-char *ft_strjoin(char const *s1, char const *s2)
+char	*ft_strjoin(char const *s1, char const *s2)
 {
-	int size;
-	char *res;
+	int		size;
+	char	*res;
 
 	size = ft_strlen(s1);
 	size += ft_strlen(s2);
@@ -42,11 +54,11 @@ char *ft_strjoin(char const *s1, char const *s2)
 	return (res);
 }
 
-char *ft_substr(char const *s, unsigned int start, size_t len)
+char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
-	size_t index;
-	size_t s_len;
-	char *res;
+	size_t	index;
+	size_t	s_len;
+	char	*res;
 
 	s_len = ft_strlen(s);
 	if (start >= s_len)
@@ -66,9 +78,9 @@ char *ft_substr(char const *s, unsigned int start, size_t len)
 	return (res);
 }
 
-char *freeable_empty_string()
+char	*freeable_empty_string(void)
 {
-	char *e;
+	char	*e;
 
 	if (!(e = malloc(1)))
 		return (NULL);

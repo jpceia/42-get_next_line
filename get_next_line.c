@@ -6,14 +6,14 @@
 /*   By: jpceia <jpceia@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/09 23:49:24 by jpceia            #+#    #+#             */
-/*   Updated: 2021/03/24 12:46:27 by jpceia           ###   ########.fr       */
+/*   Updated: 2021/03/25 12:14:59 by jceia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #include <sys/resource.h>
 
-t_tape *tape_init(t_tape *p_tape)
+t_tape	*tape_init(t_tape *p_tape)
 {
 	if (!p_tape)
 		return (NULL);
@@ -28,7 +28,7 @@ t_tape *tape_init(t_tape *p_tape)
 	return (p_tape);
 }
 
-char *str_concat_tape(char **line, t_tape *tape, size_t end)
+char	*str_concat_tape(char **line, t_tape *tape, size_t end)
 {
 	char *ret;
 	char *sub;
@@ -42,14 +42,15 @@ char *str_concat_tape(char **line, t_tape *tape, size_t end)
 	return (ret);
 }
 
-int get_next_line(int fd, char **line)
+int		get_next_line(int fd, char **line)
 {
-	static t_tape tapes[RLIMIT_NOFILE];
-	t_tape *tape;
-	size_t index;
-	int nb;
+	static t_tape	tapes[RLIMIT_NOFILE];
+	t_tape			*tape;
+	size_t			index;
+	int				nb;
 
-	if (fd < 0 || fd >= RLIMIT_NOFILE || !tape_init(&tapes[fd]) || !(*line = freeable_empty_string()))
+	if (fd < 0 || fd >= RLIMIT_NOFILE ||
+		!tape_init(&tapes[fd]) || !(*line = freeable_empty_string()))
 		return (-1);
 	tape = &tapes[fd];
 	while (1)
