@@ -6,7 +6,7 @@
 /*   By: jpceia <jpceia@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/09 23:49:24 by jpceia            #+#    #+#             */
-/*   Updated: 2021/03/24 04:26:16 by jpceia           ###   ########.fr       */
+/*   Updated: 2021/03/24 12:46:27 by jpceia           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ t_tape *tape_init(t_tape *p_tape)
 		if (!p_tape->buf)
 			return (NULL);
 		p_tape->buf[0] = '\0';
-		p_tape->start = BUFFER_SIZE;
+		p_tape->start = 0;
 	}
 	return (p_tape);
 }
@@ -34,6 +34,8 @@ char *str_concat_tape(char **line, t_tape *tape, size_t end)
 	char *sub;
 
 	sub = ft_substr(tape->buf, tape->start, end - tape->start);
+	if (!sub)
+		return (NULL);
 	ret = ft_strjoin(*line, sub);
 	free(*line);
 	free(sub);
@@ -47,17 +49,16 @@ int get_next_line(int fd, char **line)
 	size_t index;
 	int nb;
 
-	if (fd < 0 || fd >= RLIMIT_NOFILE)
+	if (fd < 0 || fd >= RLIMIT_NOFILE || !tape_init(&tapes[fd]) || !(*line = freeable_empty_string()))
 		return (-1);
 	tape = &tapes[fd];
-	if (!tape_init(tape) || !(*line = freeable_empty_string()))
-		return (-1);
 	while (1)
 	{
 		index = tape->start;
-		while (tape->buf[index] != '\n' && tape->buf[index] != '\0' && index <= BUFFER_SIZE)
+		while (tape->buf[index] != '\n' && tape->buf[index] != '\0')
 			index++;
-		*line = str_concat_tape(line, tape, index);
+		if (!(*line = str_concat_tape(line, tape, index)))
+			return (-1);
 		tape->start = index + 1;
 		if (tape->buf[index] == '\n')
 			return (1);
