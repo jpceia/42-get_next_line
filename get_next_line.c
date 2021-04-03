@@ -6,7 +6,7 @@
 /*   By: jceia <jceia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/09 23:49:24 by jpceia            #+#    #+#             */
-/*   Updated: 2021/04/03 18:20:31 by jceia            ###   ########.fr       */
+/*   Updated: 2021/04/03 20:17:26 by jceia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,5 +79,7 @@ int	get_next_line(int fd, char **line)
 	status = GNL_CONTINUE;
 	while (status == GNL_CONTINUE)
 		status = gnl_loop(fd, line, &tapes[fd]);
+	if ((status == GNL_ERR || status == GNL_EOF) && tapes[fd].buf)
+		free(tapes[fd].buf);
 	return (status);
 }
