@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jceia <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: jceia <jceia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/25 12:10:55 by jceia             #+#    #+#             */
-/*   Updated: 2021/03/25 12:14:23 by jceia            ###   ########.fr       */
+/*   Updated: 2021/04/03 18:20:32 by jceia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,8 @@ char	*freeable_empty_string(void)
 {
 	char	*e;
 
-	if (!(e = malloc(1)))
+	e = malloc(1);
+	if (!e)
 		return (NULL);
 	*e = '\0';
 	return (e);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jpceia <jpceia@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jceia <jceia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/09 23:49:24 by jpceia            #+#    #+#             */
-/*   Updated: 2021/03/25 13:58:00 by jceia            ###   ########.fr       */
+/*   Updated: 2021/04/03 18:20:31 by jceia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ t_tape	*tape_init(t_tape *p_tape)
 
 char	*str_concat_tape(char **line, t_tape *tape, size_t end)
 {
-	char *ret;
-	char *sub;
+	char	*ret;
+	char	*sub;
 
 	sub = ft_substr(tape->buf, tape->start, end - tape->start);
 	if (!sub)
@@ -42,31 +42,42 @@ char	*str_concat_tape(char **line, t_tape *tape, size_t end)
 	return (ret);
 }
 
-int		get_next_line(int fd, char **line)
+int	gnl_loop(int fd, char **line, t_tape *tape)
+{
+	size_t	index;
+	int		nb;
+
+	index = tape->start;
+	while (tape->buf[index] != '\n' && tape->buf[index] != '\0')
+		index++;
+	*line = str_concat_tape(line, tape, index);
+	if (!*line)
+		return (GNL_ERR);
+	tape->start = index + 1;
+	if (tape->buf[index] == '\n')
+		return (GNL_NL);
+	nb = read(fd, tape->buf, BUFFER_SIZE);
+	if (nb < 0)
+		return (GNL_ERR);
+	if (nb == 0)
+		return (GNL_EOF);
+	tape->buf[nb] = '\0';
+	tape->start = 0;
+	return (GNL_CONTINUE);
+}
+
+int	get_next_line(int fd, char **line)
 {
 	static t_tape	tapes[RLIMIT_NOFILE];
-	t_tape			*tape;
-	size_t			index;
-	int				nb;
+	int				status;
 
-	if (fd < 0 || fd >= RLIMIT_NOFILE || BUFFER_SIZE <= 0 ||
-		!line || !tape_init(&tapes[fd]) || !(*line = freeable_empty_string()))
-		return (-1);
-	tape = &tapes[fd];
-	while (1)
-	{
-		index = tape->start;
-		while (tape->buf[index] != '\n' && tape->buf[index] != '\0')
-			index++;
-		if (!(*line = str_concat_tape(line, tape, index)))
-			return (-1);
-		tape->start = index + 1;
-		if (tape->buf[index] == '\n')
-			return (1);
-		if ((nb = read(fd, tape->buf, BUFFER_SIZE)) <= 0)
-			return (nb);
-		tape->buf[nb] = '\0';
-		tape->start = 0;
-	}
-	return (-1);
+	if (fd < 0 || fd >= RLIMIT_NOFILE || BUFFER_SIZE <= 0 || !line)
+		return (GNL_ERR);
+	*line = freeable_empty_string();
+	if (!tape_init(&tapes[fd]) || !*line)
+		return (GNL_ERR);
+	status = GNL_CONTINUE;
+	while (status == GNL_CONTINUE)
+		status = gnl_loop(fd, line, &tapes[fd]);
+	return (status);
 }
