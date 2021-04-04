@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jceia <jceia@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jpceia <jpceia@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/09 23:49:24 by jpceia            #+#    #+#             */
-/*   Updated: 2021/04/03 20:17:26 by jceia            ###   ########.fr       */
+/*   Updated: 2021/04/04 06:31:24 by jpceia           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #include <sys/resource.h>
 
-t_tape	*tape_init(t_tape *p_tape)
+t_tape *tape_init(t_tape *p_tape)
 {
 	if (!p_tape)
 		return (NULL);
@@ -28,10 +28,16 @@ t_tape	*tape_init(t_tape *p_tape)
 	return (p_tape);
 }
 
-char	*str_concat_tape(char **line, t_tape *tape, size_t end)
+void free_tape(t_tape *p_tape)
 {
-	char	*ret;
-	char	*sub;
+	free(p_tape->buf);
+	p_tape->buf = NULL;
+}
+
+char *str_concat_tape(char **line, t_tape *tape, size_t end)
+{
+	char *ret;
+	char *sub;
 
 	sub = ft_substr(tape->buf, tape->start, end - tape->start);
 	if (!sub)
@@ -42,10 +48,10 @@ char	*str_concat_tape(char **line, t_tape *tape, size_t end)
 	return (ret);
 }
 
-int	gnl_loop(int fd, char **line, t_tape *tape)
+int gnl_loop(int fd, char **line, t_tape *tape)
 {
-	size_t	index;
-	int		nb;
+	size_t index;
+	int nb;
 
 	index = tape->start;
 	while (tape->buf[index] != '\n' && tape->buf[index] != '\0')
@@ -66,10 +72,10 @@ int	gnl_loop(int fd, char **line, t_tape *tape)
 	return (GNL_CONTINUE);
 }
 
-int	get_next_line(int fd, char **line)
+int get_next_line(int fd, char **line)
 {
-	static t_tape	tapes[RLIMIT_NOFILE];
-	int				status;
+	static t_tape tapes[RLIMIT_NOFILE];
+	int status;
 
 	if (fd < 0 || fd >= RLIMIT_NOFILE || BUFFER_SIZE <= 0 || !line)
 		return (GNL_ERR);
@@ -79,7 +85,7 @@ int	get_next_line(int fd, char **line)
 	status = GNL_CONTINUE;
 	while (status == GNL_CONTINUE)
 		status = gnl_loop(fd, line, &tapes[fd]);
-	if ((status == GNL_ERR || status == GNL_EOF) && tapes[fd].buf)
-		free(tapes[fd].buf);
+	if (status == GNL_ERR || status == GNL_EOF)
+		free_tape(&tapes[fd]);
 	return (status);
 }
