@@ -6,7 +6,7 @@
 /*   By: jpceia <jpceia@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/09 23:49:24 by jpceia            #+#    #+#             */
-/*   Updated: 2021/04/04 07:00:34 by jpceia           ###   ########.fr       */
+/*   Updated: 2021/04/04 07:07:13 by jpceia           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ t_tape	*tape_init(t_tape *p_tape)
 
 void	free_tape(t_tape *p_tape)
 {
+	if (!p_tape)
+		return ;
 	free(p_tape->buf);
 	p_tape->buf = NULL;
 }
