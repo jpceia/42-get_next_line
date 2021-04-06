@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jceia <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: jceia <jceia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/06 18:48:00 by jceia             #+#    #+#             */
-/*   Updated: 2021/04/06 18:48:07 by jceia            ###   ########.fr       */
+/*   Created: 2021/02/09 23:49:24 by jpceia            #+#    #+#             */
+/*   Updated: 2021/04/06 18:54:20 by jceia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 #include <sys/resource.h>
 
 t_tape	*tape_init(t_tape *p_tape)
