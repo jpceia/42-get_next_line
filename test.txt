@@ -1,7 +1,0 @@
-I have to write a program that reads numbers in separate lines each.
-Is it possible to read only one line of the file and then read an int from the buffer,
-and so on until the end of file? It is really hard to find good examples of using read and write.
-
-My example is kind of working but I'd like to read until it detects
-'\n' char and then convert buffer into int
-
