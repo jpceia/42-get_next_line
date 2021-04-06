@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.h                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jceia <jceia@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jceia <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/02/09 23:49:55 by jpceia            #+#    #+#             */
-/*   Updated: 2021/04/03 18:20:30 by jceia            ###   ########.fr       */
+/*   Created: 2021/04/06 18:47:51 by jceia             #+#    #+#             */
+/*   Updated: 2021/04/06 18:47:53 by jceia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#ifndef GET_NEXT_LINE_BONUS_H
+# define GET_NEXT_LINE_BONUS_H
 
 # include <stdlib.h>
 # include <unistd.h>
@@ -28,14 +28,10 @@ typedef struct s_tape
 }			t_tape;
 
 int		get_next_line(int fd, char **line);
-
 size_t	ft_strlen(const char *str);
-
 char	*ft_strcat(char *dest, const char *src);
-
 char	*ft_strjoin(char const *s1, char const *s2);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
-
 char	*freeable_empty_string(void);
 
 #endif
